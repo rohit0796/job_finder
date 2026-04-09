@@ -1,4 +1,4 @@
-﻿[app]
+[app]
 seen_store = "vercel_blob"
 seen_jobs_blob_path = "job-finder/seen_jobs.json"
 resume_path = "resume.txt"
