@@ -1,6 +1,7 @@
 ﻿from __future__ import annotations
 
 import json
+import urllib.error
 import urllib.request
 
 from job_finder.notifications.base import Notifier
@@ -36,8 +37,12 @@ class TelegramNotifier(Notifier):
             headers={"Content-Type": "application/json"},
             method="POST",
         )
-        with urllib.request.urlopen(request, timeout=20):
-            return
+        try:
+            with urllib.request.urlopen(request, timeout=20):
+                return
+        except urllib.error.HTTPError as error:
+            body = error.read().decode("utf-8", errors="replace").strip()
+            raise RuntimeError(body or str(error)) from error
 
     def _chunk_message(self, message: str) -> list[str]:
         lines = message.splitlines()
