@@ -3,7 +3,7 @@ seen_store = "vercel_blob"
 seen_jobs_blob_path = "job-finder/seen_jobs.json"
 resume_path = "resume.txt"
 top_k = 15
-min_score = 0.60
+min_score = 0.40
 max_jobs_per_source = 40
 
 [profile]
