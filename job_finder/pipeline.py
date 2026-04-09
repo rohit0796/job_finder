@@ -26,22 +26,27 @@ def build_source(source_config: SourceConfig, max_jobs: int):
 
 
 def format_recommendations(recommendations: list[Recommendation]) -> str:
-    lines: list[str] = []
+    blocks: list[str] = []
     for index, recommendation in enumerate(recommendations, start=1):
         job = recommendation.job
         matched = ", ".join(recommendation.matched_skills[:6]) or "none"
         missing = ", ".join(recommendation.missing_skills[:5]) or "none"
-        lines.extend(
+        location = job.location or "n/a"
+        block = "\n".join(
             [
-                f"{index}. {job.title} at {job.company}",
-                f"   score: {recommendation.total_score:.2f} | source: {job.source} | location: {job.location or 'n/a'}",
-                f"   matched: {matched}",
-                f"   resume gaps: {missing}",
-                f"   why: {recommendation.summary}",
-                f"   apply: {job.url}",
+                f"[{index}] {job.title}",
+                f"Company : {job.company}",
+                f"Score   : {recommendation.total_score:.2f}",
+                f"Source  : {job.source}",
+                f"Location: {location}",
+                f"Matched : {matched}",
+                f"Gaps    : {missing}",
+                f"Why     : {recommendation.summary}",
+                f"Apply   : {job.url}",
             ]
         )
-    return "\n".join(lines)
+        blocks.append(block)
+    return "\n\n".join(blocks)
 
 
 class JobFinderPipeline:
