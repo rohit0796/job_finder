@@ -1,0 +1,90 @@
+[app]
+seen_store = "local_json"
+seen_jobs_path = ".job_finder/seen_jobs.json"
+seen_jobs_blob_path = "job-finder/seen_jobs.json"
+resume_path = "resume.txt"
+top_k = 15
+min_score = 0.58
+max_jobs_per_source = 40
+
+[profile]
+name = "Your Name"
+target_titles = ["Software Engineer", "Backend Engineer", "AI Engineer"]
+must_have_skills = ["python", "sql", "api"]
+nice_to_have_skills = ["llm", "rag", "scraping", "docker", "aws"]
+preferred_companies = ["OpenAI", "Anthropic"]
+locations = ["Remote", "Bengaluru", "Bangalore"]
+remote_preference = "remote_or_hybrid"
+min_salary = 1800000
+years_experience = 3.0
+
+[scoring.weights]
+semantic = 0.35
+skills = 0.25
+experience = 0.15
+company = 0.10
+remote = 0.10
+salary = 0.05
+
+[groq]
+enabled = false
+api_key_env = "GROQ_API_KEY"
+model = ""
+
+[notifications.telegram]
+enabled = false
+bot_token_env = "TELEGRAM_BOT_TOKEN"
+chat_id = ""
+
+[notifications.email]
+enabled = false
+smtp_host = "smtp.gmail.com"
+smtp_port = 465
+username = "you@example.com"
+password_env = "EMAIL_APP_PASSWORD"
+from_address = "you@example.com"
+to_address = "you@example.com"
+use_ssl = true
+
+[[sources]]
+type = "greenhouse"
+name = "stripe-greenhouse"
+board_token = "stripe"
+quality = 0.85
+
+[[sources]]
+type = "lever"
+name = "scale-lever"
+company = "scale-ai"
+quality = 0.85
+
+[[sources]]
+type = "rss"
+name = "yc-jobs-feed"
+url = "https://www.ycombinator.com/jobs/feed"
+quality = 0.65
+
+[[sources]]
+type = "html_scrape"
+name = "linkedin-search"
+enabled = false
+search_url = "https://www.linkedin.com/jobs/search/?keywords=python%20engineer&location=India"
+item_selector = ".base-card"
+title_selector = ".base-search-card__title"
+company_selector = ".base-search-card__subtitle"
+location_selector = ".job-search-card__location"
+link_selector = "a.base-card__full-link"
+detail_description_selector = ".show-more-less-html__markup"
+limit = 20
+quality = 0.70
+
+[[sources]]
+type = "serpapi_google_jobs"
+name = "serpapi-india-python"
+enabled = false
+api_key_env = "SERPAPI_API_KEY"
+q = "python backend engineer"
+location = "India"
+gl = "in"
+hl = "en"
+quality = 0.80

@@ -1,0 +1,86 @@
+[app]
+seen_store = "local_json"
+seen_jobs_path = ".job_finder/seen_jobs.json"
+seen_jobs_blob_path = "job-finder/seen_jobs.json"
+resume_path = "resume.txt"
+top_k = 15
+min_score = 0.60
+max_jobs_per_source = 40
+
+[profile]
+name = "Fiza Afrin"
+target_titles = ["QA Automation Engineer", "SDET", "QA Engineer", "Test Automation Engineer", "Software Test Engineer", "API Test Engineer", "Salesforce QA Engineer"]
+must_have_skills = ["playwright", "python", "postman", "sql", "api testing", "automation testing"]
+nice_to_have_skills = ["salesforce", "soql", "jenkins", "jira", "azure devops", "pytest", "katalon", "accelq", "newman", "mobile testing"]
+preferred_companies = ["Salesforce", "Microsoft", "Adobe", "Atlassian", "ServiceNow", "Cognizant", "Infosys", "TCS", "Accenture", "Capgemini"]
+locations = ["Remote", "Hyderabad", "Bengaluru", "Bangalore", "Bhubaneswar"]
+remote_preference = "remote_or_hybrid"
+min_salary = 700000
+years_experience = 2.0
+
+[scoring.weights]
+semantic = 0.30
+skills = 0.30
+experience = 0.20
+company = 0.08
+remote = 0.07
+salary = 0.05
+
+[groq]
+enabled = true
+api_key_env = "GROQ_API_KEY"
+model = "llama-3.1-8b-instant"
+
+[notifications.telegram]
+enabled = true
+bot_token_env = "TELEGRAM_BOT_TOKEN"
+chat_id = "-5165105327"
+
+[notifications.email]
+enabled = false
+smtp_host = "smtp.gmail.com"
+smtp_port = 465
+username = "you@example.com"
+password_env = "EMAIL_APP_PASSWORD"
+from_address = "you@example.com"
+to_address = "you@example.com"
+use_ssl = true
+
+[[sources]]
+type = "html_scrape"
+name = "linkedin-search"
+enabled = true
+search_url = "https://www.linkedin.com/jobs/search/?keywords=QA%20Automation%20Engineer%20OR%20SDET%20OR%20QA%20Engineer&location=India"
+item_selector = ".base-card"
+title_selector = ".base-search-card__title"
+company_selector = ".base-search-card__subtitle"
+location_selector = ".job-search-card__location"
+link_selector = "a.base-card__full-link"
+detail_description_selector = ".show-more-less-html__markup"
+limit = 20
+quality = 0.70
+
+[[sources]]
+type = "html_scrape"
+name = "wellfound-search"
+enabled = true
+search_url = "https://wellfound.com/jobs"
+item_selector = "[data-test='StartupResult']"
+title_selector = "[data-test='JobTitle']"
+company_selector = "[data-test='CompanyName']"
+location_selector = "[data-test='Location']"
+link_selector = "a"
+detail_description_selector = "[data-test='JobDescription']"
+limit = 20
+quality = 0.70
+
+[[sources]]
+type = "serpapi_google_jobs"
+name = "serpapi-india-qa"
+enabled = true
+api_key_env = "SERPAPI_API_KEY"
+q = "QA Automation Engineer OR SDET OR Salesforce QA"
+location = "India"
+gl = "in"
+hl = "en"
+quality = 0.82

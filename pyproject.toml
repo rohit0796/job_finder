@@ -1,0 +1,22 @@
+﻿[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "job-finder-agent"
+version = "0.1.0"
+description = "Personal job hunting agent with fetch, rank, and notify workflows."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "OpenAI Codex" }]
+dependencies = ["vercel"]
+
+[project.optional-dependencies]
+scrape = ["beautifulsoup4>=4.12"]
+groq = ["groq"]
+
+[project.scripts]
+job-finder = "job_finder.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["job_finder*"]

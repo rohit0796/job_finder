@@ -1,0 +1,46 @@
+﻿S UMMARY 
+linkedin.com/in/fiza-afrin 
+QA Automation Engineer with 2+ years of experience in manual and automated testing for Salesforce CRM, web, and mobile applications. 
+Delivered 1,000+ test cases and 50+ automated scripts in AccelQ, achieving zero critical production bugs across 6 releases. Proficient in 
+Playwright (Python), Postman, SQL/SOQL, and Jenkins CI pipelines. Salesforce AI Associate certified. 
+S KILLS 
+Automation:  Playwright (Python), AccelQ, Katalon Studio 
+API Testing:  Postman (REST APIs, collections, environments, assertions) 
+Databases:  SQL, SOQL 
+CI / DevOps:  Jenkins, JIRA, Azure DevOps, Git 
+Testing Types:  Manual, Functional, Regression, Integration, API, UI/UX, Mobile (iOS/Android) 
+Methodologies:  Agile/Scrum, Test Planning, RTM, Defect Lifecycle Management 
+WORK EXPERIENCE 
+QA Engineer  |  Rhythminovation 
+Manual Testing 
+June 2024 – Present 
+• Designed and executed 1,000+ test cases across Salesforce CRM, web, and mobile platforms — covering functional, regression, integration, 
+and UI/UX testing, including Admin configs, workflows, and approval flows. 
+• Leveraged SOQL queries to validate CRM data integrity, detecting 30% more defects before each release. 
+• Validated 20+ REST API endpoints via Postman; confirmed database accuracy using SQL across 3 integrated systems, achieving 99% 
+data accuracy. 
+• Tracked and triaged defects in JIRA and Azure DevOps with detailed reproduction steps, reducing average fix time by 20%. 
+• Authored test plans, test cases, and RTM documentation; contributed to sprint planning, standups, and retrospectives in Agile sprints. 
+Test Automation 
+• Developed 50+ automated test scripts in AccelQ for Salesforce CRM (portals, approvals, contractor flows), cutting regression cycle time 
+by 50%. 
+• Extended coverage using Playwright (Python) and Katalon Studio, increasing test coverage by 15% and maintaining zero critical 
+production bugs across 6 releases. 
+• Configured Jenkins CI pipelines for automated test execution on every code push, reducing post-release defects by 25%. 
+P ROJECTS 
+ERCM Platform  —  Rhythminovation   |   AccelQ, Postman, SOQL, SQL, Katalon Studio, JIRA 
+• Tested HFE (training, certificates, hazard incidents), Fleet Safety (API, field validation), and ERCM (supplier portals, contractor tasks) 
+modules. 
+• Produced 500+ manual and 50+ automated test cases; used SOQL to surface 15+ data issues pre-go-live across 10,000+ records — zero 
+critical bugs across 3 releases. 
+ShopFlow — Playwright E2E Framework   |   Playwright (Python), pytest, POM, Jenkins, Allure 
+• Engineered a 120+ test case framework using pytest and Page Object Model; integrated cross-browser testing (Chrome, Firefox, Edge) with 
+Jenkins CI. 
+CartAPI — REST API Test Suite   |   Postman, Python, SQL, Newman, Jenkins 
+• Implemented 60+ Postman tests covering the full e-commerce order flow; validated 500+ records at 100% accuracy via SQL; full suite ran 
+via Newman in Jenkins in under 8 minutes. 
+E DUCATION & CERTIFICATIONS 
+B.Tech in Information Technology  |  Veer Surendra Sai University of Technology, India 
+Coursework: Data Structures & Algorithms, OOP (C++), Operating Systems, System Design, Database Management 
+• Salesforce AI Associate — Certified by Salesforce 
+• ISTQB Foundation Level — In Progress

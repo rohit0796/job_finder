@@ -1,0 +1,95 @@
+Metadata-Version: 2.4
+Name: job-finder-agent
+Version: 0.1.0
+Summary: Personal job hunting agent with fetch, rank, and notify workflows.
+Author: OpenAI Codex
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Provides-Extra: browser
+Requires-Dist: playwright>=1.44; extra == "browser"
+Provides-Extra: groq
+Requires-Dist: groq; extra == "groq"
+
+﻿# Job Finder Agent
+
+`job-finder-agent` is a local-first Python CLI for personal job hunting:
+
+- fetches jobs from multiple sources
+- filters and ranks them against your profile and resume
+- stores history in SQLite
+- sends shortlisted roles to Telegram or email
+
+It is designed to run twice daily from cron or Task Scheduler. The core app works with the Python standard library. Optional integrations are available for browser scraping and Groq-based semantic scoring.
+
+## What It Supports
+
+- Greenhouse boards
+- Lever postings
+- RSS feeds
+- Browser scraping via Playwright for pages like LinkedIn, Wellfound, or custom career pages
+- Resume-aware scoring with lexical similarity by default
+- Optional Groq LLM scoring for better semantic ranking
+- Telegram and SMTP notifications
+
+## Quick Start
+
+1. Create a config:
+
+```powershell
+python -m job_finder init-config
+```
+
+2. Put your resume text into `resume.txt` or point the config to another text file.
+
+3. Edit `job_finder.toml` with your profile, sources, and notification credentials.
+
+4. Run a dry pass:
+
+```powershell
+python -m job_finder run --dry-run
+```
+
+5. Run end-to-end:
+
+```powershell
+python -m job_finder run
+```
+
+## Commands
+
+```powershell
+python -m job_finder init-config
+python -m job_finder fetch
+python -m job_finder run --dry-run
+python -m job_finder list --limit 10
+```
+
+## Scheduling
+
+Run it twice daily. Example Task Scheduler command:
+
+```powershell
+python -m job_finder run
+```
+
+## Optional Installs
+
+Groq semantic scoring:
+
+```powershell
+pip install ".[groq]"
+```
+
+Browser scraping:
+
+```powershell
+pip install ".[browser]"
+playwright install chromium
+```
+
+## Notes
+
+- LinkedIn and Wellfound support is implemented through configurable browser scraping. Their page structures change, so selectors may need updates.
+- Groq integration uses an LLM judge for semantic fit scoring. If Groq is disabled or unavailable, the matcher falls back to local lexical similarity.
+- Auto-apply is intentionally not implemented in this first version. The pipeline is structured so you can add site-specific application agents later.
+- Keep scraping volume low and respect the terms of each site.

@@ -1,0 +1,6 @@
+
+[browser]
+playwright>=1.44
+
+[groq]
+groq
