@@ -9,13 +9,14 @@ description = "Personal job hunting agent with fetch, rank, and notify workflows
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "OpenAI Codex" }]
-dependencies = ["vercel"]
+dependencies = ["vercel", "fastapi"]
 
 [project.optional-dependencies]
 scrape = ["beautifulsoup4>=4.12"]
 groq = ["groq"]
 
 [project.scripts]
+app = "app:app"
 job-finder = "job_finder.cli:main"
 
 [tool.setuptools.packages.find]
