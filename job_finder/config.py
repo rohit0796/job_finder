@@ -22,6 +22,7 @@ class ProfileConfig:
     remote_preference: str = "remote_or_hybrid"
     min_salary: int | None = None
     years_experience: float = 0.0
+    max_experience_gap: float = 2.0
 
 
 @dataclass(slots=True)
@@ -132,11 +133,14 @@ def load_config(path: Path | None = None) -> AppConfig:
     profile = ProfileConfig(
         name=profile_table.get("name", ""),
         target_titles=list(profile_table.get("target_titles", [])),
-        must_have_skills=[value.lower() for value in profile_table.get("must_have_skills", [])],
-        nice_to_have_skills=[value.lower() for value in profile_table.get("nice_to_have_skills", [])],
+        must_have_skills=[value.lower()
+                          for value in profile_table.get("must_have_skills", [])],
+        nice_to_have_skills=[value.lower() for value in profile_table.get(
+            "nice_to_have_skills", [])],
         preferred_companies=list(profile_table.get("preferred_companies", [])),
         locations=list(profile_table.get("locations", [])),
-        remote_preference=profile_table.get("remote_preference", "remote_or_hybrid"),
+        remote_preference=profile_table.get(
+            "remote_preference", "remote_or_hybrid"),
         min_salary=profile_table.get("min_salary"),
         years_experience=float(profile_table.get("years_experience", 0.0)),
     )
@@ -155,7 +159,8 @@ def load_config(path: Path | None = None) -> AppConfig:
     )
     telegram = TelegramConfig(
         enabled=bool(telegram_table.get("enabled", False)),
-        bot_token_env=telegram_table.get("bot_token_env", "TELEGRAM_BOT_TOKEN"),
+        bot_token_env=telegram_table.get(
+            "bot_token_env", "TELEGRAM_BOT_TOKEN"),
         chat_id=telegram_table.get("chat_id", ""),
     )
     email = EmailConfig(
@@ -177,14 +182,18 @@ def load_config(path: Path | None = None) -> AppConfig:
         source_type = str(payload.pop("type"))
         name = str(payload.pop("name", source_type))
         enabled = bool(payload.pop("enabled", True))
-        sources.append(SourceConfig(type=source_type, name=name, enabled=enabled, settings=payload))
+        sources.append(SourceConfig(type=source_type, name=name,
+                       enabled=enabled, settings=payload))
 
     return AppConfig(
         config_path=config_path,
         seen_store=str(app_table.get("seen_store", "local_json")),
-        seen_jobs_path=_resolve_path(base_dir, app_table.get("seen_jobs_path", ".job_finder/seen_jobs.json")),
-        seen_jobs_blob_path=str(app_table.get("seen_jobs_blob_path", "job-finder/seen_jobs.json")),
-        resume_path=_resolve_path(base_dir, app_table.get("resume_path", "resume.txt")),
+        seen_jobs_path=_resolve_path(base_dir, app_table.get(
+            "seen_jobs_path", ".job_finder/seen_jobs.json")),
+        seen_jobs_blob_path=str(app_table.get(
+            "seen_jobs_blob_path", "job-finder/seen_jobs.json")),
+        resume_path=_resolve_path(
+            base_dir, app_table.get("resume_path", "resume.txt")),
         top_k=int(app_table.get("top_k", 15)),
         min_score=float(app_table.get("min_score", 0.58)),
         max_jobs_per_source=int(app_table.get("max_jobs_per_source", 40)),

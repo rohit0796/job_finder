@@ -41,12 +41,14 @@ STOPWORDS = {
     "your",
 }
 TOKEN_PATTERN = re.compile(r"[a-zA-Z][a-zA-Z0-9\+\#\.\-/]{1,30}")
-YEARS_PATTERN = re.compile(r"(\d+(?:\.\d+)?)\s*\+?\s*(?:years|yrs)", re.IGNORECASE)
+YEARS_PATTERN = re.compile(
+    r"(\d+(?:\.\d+)?)\s*\+?\s*(?:years|yrs)", re.IGNORECASE)
 JSON_BLOCK_PATTERN = re.compile(r"\{.*?\}", re.DOTALL)
 
 
 def tokenize(text: str) -> list[str]:
-    tokens = [match.group(0).lower() for match in TOKEN_PATTERN.finditer(text or "")]
+    tokens = [match.group(0).lower()
+              for match in TOKEN_PATTERN.finditer(text or "")]
     return [token for token in tokens if token not in STOPWORDS]
 
 
@@ -60,16 +62,19 @@ def lexical_similarity(left: str, right: str) -> float:
     right_counts = Counter(tokenize(right))
     if not left_counts or not right_counts:
         return 0.0
-    shared = sum(left_counts[token] * right_counts[token] for token in left_counts.keys() & right_counts.keys())
+    shared = sum(left_counts[token] * right_counts[token]
+                 for token in left_counts.keys() & right_counts.keys())
     left_norm = math.sqrt(sum(value * value for value in left_counts.values()))
-    right_norm = math.sqrt(sum(value * value for value in right_counts.values()))
+    right_norm = math.sqrt(
+        sum(value * value for value in right_counts.values()))
     if not left_norm or not right_norm:
         return 0.0
     return max(0.0, min(1.0, shared / (left_norm * right_norm)))
 
 
 def estimate_years_required(text: str) -> float | None:
-    matches = [float(match.group(1)) for match in YEARS_PATTERN.finditer(text or "")]
+    matches = [float(match.group(1))
+               for match in YEARS_PATTERN.finditer(text or "")]
     return max(matches) if matches else None
 
 
@@ -158,8 +163,10 @@ class JobMatcher:
 
     def __post_init__(self) -> None:
         self.weights = self.config.scoring_weights.normalized()
-        self.resume_keywords = set(extract_keywords(self.resume_text, limit=60))
-        self.target_titles = [value.lower() for value in self.config.profile.target_titles]
+        self.resume_keywords = set(
+            extract_keywords(self.resume_text, limit=60))
+        self.target_titles = [value.lower()
+                              for value in self.config.profile.target_titles]
         self.target_skills = {
             value.lower()
             for value in (self.config.profile.must_have_skills + self.config.profile.nice_to_have_skills)
@@ -170,17 +177,23 @@ class JobMatcher:
         self.groq_scorer = OptionalGroqScorer(self.config, self.resume_text)
 
     def evaluate(self, job: Job) -> Recommendation:
-        job_text = normalize_whitespace(" ".join([job.title, job.company, job.location, job.description]))
+        job_text = normalize_whitespace(
+            " ".join([job.title, job.company, job.location, job.description]))
 
         semantic_score = self.groq_scorer.score(job_text)
         if semantic_score is None:
             semantic_score = lexical_similarity(self.resume_text, job_text)
 
-        matched_skills = sorted(skill for skill in self.target_skills if skill in job_text.lower())
-        must_have_hits = [skill for skill in self.config.profile.must_have_skills if skill in job_text.lower()]
-        nice_to_have_hits = [skill for skill in self.config.profile.nice_to_have_skills if skill in job_text.lower()]
-        required_skills_total = (len(self.config.profile.must_have_skills) * 1.5) + len(self.config.profile.nice_to_have_skills) or 1.0
-        skill_score = ((len(must_have_hits) * 1.5) + len(nice_to_have_hits)) / required_skills_total
+        matched_skills = sorted(
+            skill for skill in self.target_skills if skill in job_text.lower())
+        must_have_hits = [
+            skill for skill in self.config.profile.must_have_skills if skill in job_text.lower()]
+        nice_to_have_hits = [
+            skill for skill in self.config.profile.nice_to_have_skills if skill in job_text.lower()]
+        required_skills_total = (len(self.config.profile.must_have_skills)
+                                 * 1.5) + len(self.config.profile.nice_to_have_skills) or 1.0
+        skill_score = ((len(must_have_hits) * 1.5) +
+                       len(nice_to_have_hits)) / required_skills_total
         skill_score = max(0.0, min(1.0, skill_score))
 
         years_required = estimate_years_required(job.description)
@@ -205,7 +218,8 @@ class JobMatcher:
         else:
             remote_score = 0.8
             if self.config.profile.locations:
-                remote_score = 1.0 if any(location.lower() in location_text for location in self.config.profile.locations) else 0.4
+                remote_score = 1.0 if any(location.lower(
+                ) in location_text for location in self.config.profile.locations) else 0.4
 
         salary_floor = self.config.profile.min_salary
         if salary_floor is None:
@@ -219,7 +233,8 @@ class JobMatcher:
             else:
                 salary_score = max(0.0, offered / salary_floor)
 
-        title_boost = 0.15 if any(title in job.title.lower() for title in self.target_titles) else 0.0
+        title_boost = 0.15 if any(title in job.title.lower()
+                                  for title in self.target_titles) else 0.0
         semantic_score = min(1.0, semantic_score + title_boost)
 
         breakdown = {
@@ -230,17 +245,22 @@ class JobMatcher:
             "remote": round(remote_score, 4),
             "salary": round(salary_score, 4),
         }
-        total_score = sum(breakdown[key] * self.weights[key] for key in breakdown)
+        total_score = sum(breakdown[key] * self.weights[key]
+                          for key in breakdown)
 
         missing_skills = [
             keyword
             for keyword in extract_keywords(job.description, limit=30)
             if keyword not in self.resume_keywords and keyword not in STOPWORDS and len(keyword) > 2
         ][:8]
+        experience_gap_ok = (
+            years_required is None
+            or years_required <= self.config.profile.years_experience + self.config.profile.max_experience_gap
+        )
         accepted = total_score >= self.config.min_score and (
             not self.config.profile.must_have_skills
             or len(must_have_hits) >= max(1, len(self.config.profile.must_have_skills) // 2)
-        )
+        ) and experience_gap_ok
         summary_bits = [
             f"score {total_score:.2f}",
             f"{len(matched_skills)} profile skills matched",

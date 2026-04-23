@@ -17,6 +17,7 @@ locations = ["Remote", "Bengaluru", "Bangalore"]
 remote_preference = "remote_or_hybrid"
 min_salary = 1800000
 years_experience = 3.0
+max_experience_gap = 2.0
 
 [scoring.weights]
 semantic = 0.35
